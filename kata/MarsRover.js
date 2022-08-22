@@ -1,20 +1,20 @@
 class MarsRover {
-    coordX = 1;
-    coordY = 1;
-    direction = 'N'; // N,S,E,W
-    commandsArrayCharac = [];
+    coordX = 1;                 // 1 to 5
+    coordY = 1;                 // 1 to 5
+    direction = 'N';            // N,S,E,W
+    commandsArrayCharac = [];   // f,b,r,l
     move([...commands]){
         // console.log('letters ',commands)
 
         this.commandsArrayCharac = commands;
 
-        this.interpreteLetters();
+        this.executeCommands();
         
         console.log('result ',[this.coordX,this.coordY,this.direction])
         return [this.coordX,this.coordY,this.direction];
     }
 
-    interpreteLetters(){
+    executeCommands(){
         for (let letter of this.commandsArrayCharac){
             // console.log('result ',[this.coordX,this.coordY,this.direction])
             this.advance(letter);
@@ -23,12 +23,14 @@ class MarsRover {
         }
     }
     advance(letter){
+        const forward = letter === 'f' ? true : false;
+        const backward = letter === 'b' ? true : false;
+        
         let value = 0;
-
-        if (letter === 'f'){
+        if (forward){
             value = 1;
         } 
-        if (letter === 'b'){
+        if (backward){
             value = -1;
         }
 
@@ -45,7 +47,6 @@ class MarsRover {
             this.coordX -= value;
         }
 
-
     }
     handleEdges(){
         if (this.coordX === 0){
@@ -56,13 +57,15 @@ class MarsRover {
         }
     }
     turn(letter){
+        const turnRight = letter === 'r' ? true : false;
+        const turnLeft = letter === 'l' ? true : false;
+        
         const directionsR = ['N','E','S','W','N'];
-
-        if (letter === 'r'){
+        if (turnRight){
             const index = directionsR.findIndex(direction => direction === this.direction);
             this.direction = directionsR[index + 1];
         }
-        if (letter === 'l'){
+        if (turnLeft){
             const index = directionsR.lastIndexOf(this.direction);
             this.direction = directionsR[index - 1];
         }
