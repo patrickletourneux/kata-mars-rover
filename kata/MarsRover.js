@@ -55,6 +55,12 @@ class MarsRover {
         if (this.coordY === 0){
             this.coordY = 5;
         }
+        if (this.coordX === 6){
+            this.coordX = 1;
+        }
+        if (this.coordY === 6){
+            this.coordY = 1;
+        }
     }
     turn(letter){
         const turnRight = letter === 'r' ? true : false;

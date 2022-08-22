@@ -37,6 +37,12 @@ describe('MarsRover class', () => {
       });
       test(`move(['l','l','f','f']) return [1,-1,'S']`, () => {
         expect(instance.move(['l','l','f','f'])).toEqual([1,4,'S']);
+      }); 
+      test(`move(['r','r','r','r','f','f','f','f','f']) return [1,1,'N']`, () => {
+        expect(instance.move(['r','r','r','r','f','f','f','f','f'])).toEqual([1,1,'N']);
+      });
+      test(`move(['l','l','l','l','b','b','b','b','b']) return [1,1,'N']`, () => {
+        expect(instance.move(['l','l','l','l','b','b','b','b','b'])).toEqual([1,1,'N']);
       });
     
     });
