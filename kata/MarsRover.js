@@ -1,6 +1,6 @@
 class MarsRover {
-    coordX = 0;
-    coordY = 0;
+    coordX = 1;
+    coordY = 1;
     direction = 'N'; // N,S,E,W
     commandsArrayCharac = [];
     move([...commands]){
@@ -18,6 +18,7 @@ class MarsRover {
         for (let letter of this.commandsArrayCharac){
             // console.log('result ',[this.coordX,this.coordY,this.direction])
             this.advance(letter);
+            this.handleEdges();
             this.turn(letter);
         }
     }
@@ -43,6 +44,16 @@ class MarsRover {
         if (this.direction === 'W'){
             this.coordX -= value;
         }
+
+
+    }
+    handleEdges(){
+        if (this.coordX === 0){
+            this.coordX = 5;
+        }
+        if (this.coordY === 0){
+            this.coordY = 5;
+        }
     }
     turn(letter){
         const directionsR = ['N','E','S','W','N'];
@@ -56,6 +67,7 @@ class MarsRover {
             this.direction = directionsR[index - 1];
         }
     }
+
 }
 
 module.exports = MarsRover;
