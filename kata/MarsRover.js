@@ -6,6 +6,10 @@ class MarsRover {
     direction = 'N';            // N,S,E,W
     commandsArrayCharac = [];   // f,b,r,l
     obstaclesCoordArray = [];
+    isObstacleNextCoordinates = false;
+    firstObstacleOnCommands = [];
+    moveResult = [];    
+
     move([...commands]){
         // console.log('letters ',commands)
 
@@ -13,8 +17,7 @@ class MarsRover {
 
         this.executeCommands();
         
-        console.log('result ',[this.coordX,this.coordY,this.direction])
-        return [this.coordX,this.coordY,this.direction];
+        return this.moveResult;
     }
 
     executeCommands(){
@@ -22,8 +25,14 @@ class MarsRover {
             // console.log('result ',[this.coordX,this.coordY,this.direction])
             this.calculNextCoord(letter);
             this.handleEdges();
+            this.isObstacleNextCoord();
+            if (this.isObstacleNextCoordinates){ 
+                this.moveResult = [this.firstObstacleOnCommands[0],this.firstObstacleOnCommands[1],'obstacle']
+                break;
+            }
             this.advance();
             this.turn(letter);
+            this.moveResult = [this.coordX,this.coordY,this.direction];
         }
     }
     calculNextCoord(letter){
@@ -50,11 +59,6 @@ class MarsRover {
         if (this.direction === 'W'){
             this.nextCoordX -= value;
         }
-
-    }
-    advance(){
-        this.coordX = this.nextCoordX;
-        this.coordY = this.nextCoordY;
     }
     handleEdges(){
         if (this.nextCoordX === 0){
@@ -69,6 +73,20 @@ class MarsRover {
         if (this.nextCoordY === 6){
             this.nextCoordY = 1;
         }
+    }
+    isObstacleNextCoord(){
+        for (let obstacle of this.obstaclesCoordArray){
+            // console.log('BOUCLE obstacle', obstacle, ' ',this.nextCoordX,' ', this.nextCoordY)
+            if (obstacle[0] === this.nextCoordX && obstacle[1] === this.nextCoordY){
+                this.isObstacleNextCoordinates = true;
+                this.firstObstacleOnCommands = obstacle
+
+            }
+        }
+    }
+    advance(){
+        this.coordX = this.nextCoordX;
+        this.coordY = this.nextCoordY;
     }
     turn(letter){
         const turnRight = letter === 'r' ? true : false;
