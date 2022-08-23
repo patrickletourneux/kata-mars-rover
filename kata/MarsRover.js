@@ -1,8 +1,11 @@
 class MarsRover {
     coordX = 1;                 // 1 to 5
     coordY = 1;                 // 1 to 5
+    nextCoordX = 1;                 // 1 to 5
+    nextCoordY = 1;                 // 1 to 5
     direction = 'N';            // N,S,E,W
     commandsArrayCharac = [];   // f,b,r,l
+    obstaclesCoordArray = [];
     move([...commands]){
         // console.log('letters ',commands)
 
@@ -17,12 +20,13 @@ class MarsRover {
     executeCommands(){
         for (let letter of this.commandsArrayCharac){
             // console.log('result ',[this.coordX,this.coordY,this.direction])
-            this.advance(letter);
+            this.calculNextCoord(letter);
             this.handleEdges();
+            this.advance();
             this.turn(letter);
         }
     }
-    advance(letter){
+    calculNextCoord(letter){
         const forward = letter === 'f' ? true : false;
         const backward = letter === 'b' ? true : false;
         
@@ -35,31 +39,35 @@ class MarsRover {
         }
 
         if (this.direction === 'N'){
-            this.coordY += value;
+            this.nextCoordY += value;
         }
         if (this.direction === 'E'){
-            this.coordX += value;
+            this.nextCoordX += value;
         }
         if (this.direction === 'S'){
-            this.coordY -= value;
+            this.nextCoordY -= value;
         }
         if (this.direction === 'W'){
-            this.coordX -= value;
+            this.nextCoordX -= value;
         }
 
     }
+    advance(){
+        this.coordX = this.nextCoordX;
+        this.coordY = this.nextCoordY;
+    }
     handleEdges(){
-        if (this.coordX === 0){
-            this.coordX = 5;
+        if (this.nextCoordX === 0){
+            this.nextCoordX = 5;
         }
-        if (this.coordY === 0){
-            this.coordY = 5;
+        if (this.nextCoordY === 0){
+            this.nextCoordY = 5;
         }
-        if (this.coordX === 6){
-            this.coordX = 1;
+        if (this.nextCoordX === 6){
+            this.nextCoordX = 1;
         }
-        if (this.coordY === 6){
-            this.coordY = 1;
+        if (this.nextCoordY === 6){
+            this.nextCoordY = 1;
         }
     }
     turn(letter){
