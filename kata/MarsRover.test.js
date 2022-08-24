@@ -5,13 +5,14 @@ describe('MarsRover class', () => {
     const instance = new MarsRover();
     
     beforeEach(() => {
-      instance.coordX = 1;
-      instance.coordY = 1;
-      instance.nextCoordX = 1;
-      instance.nextCoordY = 1;
+      instance.coordinates = { X : 1 , Y : 1 };
+      instance.nextCoordinates = { X : 1 , Y : 1 };
       instance.direction = 'N';
       instance.commandsArrayCharac = [];
+      instance.isObstacleNextCoordinates = false;
       instance.obstaclesCoordArray = [];
+      instance.firstObstacleOnCommands = {};
+      instance.moveResult = []; 
     })
 
     describe('move()', () => {
@@ -48,13 +49,14 @@ describe('MarsRover class', () => {
       test(`move(['l','l','l','l','b','b','b','b','b']) return [1,1,'N']`, () => {
         expect(instance.move(['l','l','l','l','b','b','b','b','b'])).toEqual([1,1,'N']);
       });
-      test(`obstacle move(['f','f']) return [1,2,'N']`, () => {
-        instance.obstaclesCoordArray = [[1,3]]
+      test(`obstacle move(['f','f']) return [1,3,'obstacle']`, () => {
+        instance.obstaclesCoordArray = [{X : 1, Y : 3}]
         expect(instance.move(['f','f'])).toEqual([1,3,'obstacle']);
       });
-      test(`obstacle move(['f','f']) return [1,2,'N']`, () => {
-        instance.obstaclesCoordArray = [[5,1],[1,3],[3,3]]
+      test(`obstacle move(['f','f']) return [1,3,'obstacle']`, () => {
+        instance.obstaclesCoordArray = [{ X : 5, Y : 1} ,{ X : 1, Y : 3},{ X : 3, Y : 3}]
         expect(instance.move(['f','f'])).toEqual([1,3,'obstacle']);
+        // expect(instance.coordinates).toEqual({X:1,Y:2});
       });
     
     });

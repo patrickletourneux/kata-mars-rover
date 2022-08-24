@@ -1,13 +1,19 @@
 class MarsRover {
-    coordX = 1;                 // 1 to 5
-    coordY = 1;                 // 1 to 5
-    nextCoordX = 1;                 // 1 to 5
-    nextCoordY = 1;                 // 1 to 5
+    coordinates = {
+        X : 1 ,     // 1 to 5
+        Y : 1 ,      // 1 to 5
+    };              
+
+    nextCoordinates = {
+        X : 1 ,     // 1 to 5
+        Y : 1 ,       // 1 to 5
+    };               
+
     direction = 'N';            // N,S,E,W
     commandsArrayCharac = [];   // f,b,r,l
     obstaclesCoordArray = [];
     isObstacleNextCoordinates = false;
-    firstObstacleOnCommands = [];
+    firstObstacleOnCommands = {};
     moveResult = [];    
 
     move([...commands]){
@@ -22,17 +28,17 @@ class MarsRover {
 
     executeCommands(){
         for (let letter of this.commandsArrayCharac){
-            // console.log('result ',[this.coordX,this.coordY,this.direction])
+            // console.log('result ',[this.coordinates.X,this.coordinates.Y,this.direction])
             this.calculNextCoord(letter);
             this.handleEdges();
             this.isObstacleNextCoord();
             if (this.isObstacleNextCoordinates){ 
-                this.moveResult = [this.firstObstacleOnCommands[0],this.firstObstacleOnCommands[1],'obstacle']
+                this.moveResult = [this.firstObstacleOnCommands.X,this.firstObstacleOnCommands.Y,'obstacle']
                 break;
             }
             this.advance();
             this.turn(letter);
-            this.moveResult = [this.coordX,this.coordY,this.direction];
+            this.moveResult = [this.coordinates.X,this.coordinates.Y,this.direction];
         }
     }
     calculNextCoord(letter){
@@ -48,45 +54,43 @@ class MarsRover {
         }
 
         if (this.direction === 'N'){
-            this.nextCoordY += value;
+            this.nextCoordinates.Y += value;
         }
         if (this.direction === 'E'){
-            this.nextCoordX += value;
+            this.nextCoordinates.X += value;
         }
         if (this.direction === 'S'){
-            this.nextCoordY -= value;
+            this.nextCoordinates.Y -= value;
         }
         if (this.direction === 'W'){
-            this.nextCoordX -= value;
+            this.nextCoordinates.X -= value;
         }
     }
     handleEdges(){
-        if (this.nextCoordX === 0){
-            this.nextCoordX = 5;
+        if (this.nextCoordinates.X === 0){
+            this.nextCoordinates.X = 5;
         }
-        if (this.nextCoordY === 0){
-            this.nextCoordY = 5;
+        if (this.nextCoordinates.Y === 0){
+            this.nextCoordinates.Y = 5;
         }
-        if (this.nextCoordX === 6){
-            this.nextCoordX = 1;
+        if (this.nextCoordinates.X === 6){
+            this.nextCoordinates.X = 1;
         }
-        if (this.nextCoordY === 6){
-            this.nextCoordY = 1;
+        if (this.nextCoordinates.Y === 6){
+            this.nextCoordinates.Y = 1;
         }
     }
     isObstacleNextCoord(){
         for (let obstacle of this.obstaclesCoordArray){
-            // console.log('BOUCLE obstacle', obstacle, ' ',this.nextCoordX,' ', this.nextCoordY)
-            if (obstacle[0] === this.nextCoordX && obstacle[1] === this.nextCoordY){
+            if (obstacle.X === this.nextCoordinates.X && obstacle.Y === this.nextCoordinates.Y){
                 this.isObstacleNextCoordinates = true;
                 this.firstObstacleOnCommands = obstacle
-
             }
         }
     }
     advance(){
-        this.coordX = this.nextCoordX;
-        this.coordY = this.nextCoordY;
+        this.coordinates.X = this.nextCoordinates.X;
+        this.coordinates.Y = this.nextCoordinates.Y;
     }
     turn(letter){
         const turnRight = letter === 'r' ? true : false;
